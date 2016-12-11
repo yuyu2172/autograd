@@ -145,14 +145,16 @@ primitive_vsum.vjp = lambda arg, g, *args : g
 def identity(x) : return x
 identity.defvjp(lambda g, ans, vs, gvs, x : g)
 
+import cupy as cp
 class Node(object):
-    __slots__ = ['value', 'recipe', 'progenitors', 'vspace']
+    __slots__ = ['value', 'recipe', 'progenitors', 'vspace', 'xp', 'axp']
 
-    def __init__(self, value, recipe, progenitors):
+    def __init__(self, value, recipe, progenitors, xp=cp):
         self.value = value
         self.recipe = recipe
         self.progenitors = progenitors
         self.vspace = vspace(value)
+        self.xp = xp
 
     def __bool__(self):
         return bool(self.value)
